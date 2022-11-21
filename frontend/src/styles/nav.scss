@@ -174,19 +174,18 @@
     }
     .text {
       .top {
-        position: absolute;
-        left: 0.25rem;
-        top: -0.1rem;
-        font-size: 0.65rem;
-        line-height: 0.65rem;
-        color: var(--sub-color);
-        transition: color 0.25s;
+        transition: color .25s;
+        align-self: flex-end;
       }
+
       position: relative;
       font-size: 2rem;
       margin-top: -0.4rem;
       font-family: "Lexend Deca";
       transition: color 0.25s;
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 5px;
     }
     white-space: nowrap;
     user-select: none;
