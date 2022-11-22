@@ -174,7 +174,9 @@
     }
     .text {
       .top {
-        transition: color .25s;
+        font-size: 0.65rem;
+        line-height: 0.65rem;
+        color: var(--sub-color);
         align-self: flex-end;
       }
 
