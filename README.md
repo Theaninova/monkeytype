@@ -9,6 +9,7 @@
 
 1. Leaderboard with no anti-cheat module. We want to allow keyboards other than QWERTY like charachorder vs stenograph to make it to leader boards to see how fast they can be
 2. Simpler Accuracy algorithm that only compares input and output of test, instead of looking at everything users have entered
+3. We also rebrand monkeytype into charatyping
 
 # Below here are the original monkeytype
 
