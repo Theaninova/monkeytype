@@ -4,7 +4,15 @@ import Ape from "../ape";
 import * as Notifications from "../elements/notifications";
 import * as ChartController from "../controllers/chart-controller";
 import * as ConnectionState from "../states/connection";
-import intervalToDuration from "date-fns/intervalToDuration";
+
+type TierPlacement = {
+  value: number|'-';
+  unit: string;
+}
+
+type TierList = {
+  [key: string]: number;
+}
 
 function reset(): void {
   $(".pageAbout .contributors").empty();
@@ -28,36 +36,31 @@ function updateStatsAndHistogram(): void {
 
   const secondsRounded = Math.round(typingStatsResponseData.timeTyping);
 
-  const timeTypingDuration = intervalToDuration({
-    start: 0,
-    end: secondsRounded * 1000,
-  });
+  const timeTypingDuration = getTimeWithAppropriateUnits(secondsRounded);
+  const testStartedCount = getAppropriateSizeAndSuffixForNumber(typingStatsResponseData.testsStarted);
+  const testCompleteCount = getAppropriateSizeAndSuffixForNumber(typingStatsResponseData.testsCompleted);
 
   $(".pageAbout #totalTimeTypingStat .val").text(
-    timeTypingDuration.years?.toString() ?? ""
+    timeTypingDuration.value.toString() ?? ""
   );
-  $(".pageAbout #totalTimeTypingStat .valSmall").text("years");
+  $(".pageAbout #totalTimeTypingStat .valSmall").text(timeTypingDuration.unit);
   $(".pageAbout #totalTimeTypingStat").attr(
     "aria-label",
-    Math.round(secondsRounded / 3600) + " hours"
+    `${timeTypingDuration.value} ${timeTypingDuration.unit}`
   );
 
-  $(".pageAbout #totalStartedTestsStat .val").text(
-    Math.round(typingStatsResponseData.testsStarted / 1000000)
-  );
-  $(".pageAbout #totalStartedTestsStat .valSmall").text("million");
+  $(".pageAbout #totalStartedTestsStat .val").text(testStartedCount.value);
+  $(".pageAbout #totalStartedTestsStat .valSmall").text(testStartedCount.unit);
   $(".pageAbout #totalStartedTestsStat").attr(
     "aria-label",
-    typingStatsResponseData.testsStarted + " tests"
+    `${testStartedCount.value} ${testStartedCount.unit}`
   );
 
-  $(".pageAbout #totalCompletedTestsStat .val").text(
-    Math.round(typingStatsResponseData.testsCompleted / 1000000)
-  );
-  $(".pageAbout #totalCompletedTestsStat .valSmall").text("million");
+  $(".pageAbout #totalCompletedTestsStat .val").text(testCompleteCount.value);
+  $(".pageAbout #totalCompletedTestsStat .valSmall").text(testCompleteCount.unit);
   $(".pageAbout #totalCompletedTestsStat").attr(
     "aria-label",
-    typingStatsResponseData.testsCompleted + " tests"
+    `${testCompleteCount.value} ${testCompleteCount.unit}`
   );
 }
 
@@ -177,4 +180,42 @@ function getHistogramDataBucketed(data: Record<string, number>): {
     }
   }
   return { data: histogramChartDataBucketed, labels };
+}
+
+function findTierInList(value: number, list: TierList): TierPlacement {
+  for (const [unit, condition] of Object.entries(list)) {
+    if (value >= condition) {
+      return {
+        value: Math.round(value / condition),
+        unit,
+      };
+    }
+  }
+
+  return {
+    value: '-',
+    unit: '-',
+  };
+}
+
+function getTimeWithAppropriateUnits(timeInSeconds: number) {
+  const timeDictionary: TierList = {
+    'years': 29030400,
+    'months': 2419200,
+    'days': 86400,
+    'hours': 3600,
+    'minutes': 60,
+    'minute': timeInSeconds,
+  };
+  return findTierInList(timeInSeconds, timeDictionary);
+}
+
+function getAppropriateSizeAndSuffixForNumber(num: number) {
+  const SIPrefixDictionary: TierList = {
+    'million': 1_000_000,
+    'thousand': 1_000,
+    'hundred': 100,
+    '': 1,
+  };
+  return findTierInList(num, SIPrefixDictionary);
 }
