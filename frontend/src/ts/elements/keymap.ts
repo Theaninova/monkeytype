@@ -176,6 +176,24 @@ export async function refresh(
           rowElement += `<div class="keymapKey keySplitSpace">
           <div class="letter"></div>
         </div>`;
+        } else if (row.startsWith("pad")) {
+          const { translate, rotate } = rowKeys as unknown as {
+            translate: [number, number];
+            rotate: number;
+          };
+
+          let keyElements = "";
+          for (let i = 0; i < 5; i++) {
+            keyElements += `<div class="keymapKey" data-key="a" style="grid-area: pad-${i}">
+              <span class="letter">a</span>
+            </div>`;
+          }
+
+          const padElement = `<div class="keymapPad" style="translate: calc(${translate[0]}px - 50%) ${translate[1]}px; rotate: ${rotate}deg">
+            ${keyElements}
+          </div>`;
+
+          keymapElement += padElement;
         } else {
           for (let i = 0; i < rowKeys.length; i++) {
             if (row === "row2" && i === 12) continue;
@@ -256,7 +274,9 @@ export async function refresh(
           }
         }
 
-        keymapElement += `<div class="row r${index + 1}">${rowElement}</div>`;
+        if (!row.startsWith("pad")) {
+          keymapElement += `<div class="row r${index + 1}">${rowElement}</div>`;
+        }
       }
     );
 

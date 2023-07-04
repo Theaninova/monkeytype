@@ -13,6 +13,37 @@
     gap: 0.25rem;
   }
 
+  .keymapPad {
+    position: absolute;
+    left: 50%;
+    display: grid;
+    grid-template-areas:
+      "pad-8 pad-0 pad-5"
+      "pad-3 pad-4 pad-1"
+      "pad-7 pad-2 pad-6";
+    gap: 0;
+    border-radius: 50%;
+    border: 0.05rem solid;
+    border-color: var(--sub-color);
+    overflow: hidden;
+
+    .keymapKey {
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 0;
+
+      &:nth-child(odd) {
+        border-style: none solid;
+      }
+      &:nth-child(even) {
+        border-style: solid none;
+      }
+      &:nth-child(5) {
+        border-style: none;
+      }
+    }
+  }
+
   .keymapKey {
     display: flex;
     background-color: transparent;

@@ -1,4 +1,33 @@
 {
+  "CharaChorder One": {
+    "type": "cc1",
+    "keys": {
+      "pad1": {
+        "translate": [60, 80],
+        "rotate": -20
+      },
+      "pad2": {
+        "translate": [90, 160],
+        "rotate": -20
+      },
+      "pad3": {
+        "translate": [100, 10],
+        "rotate": -15
+      },
+      "pad4": {
+        "translate": [180, 0],
+        "rotate": -5
+      },
+      "pad5": {
+        "translate": [260, 0],
+        "rotate": 5
+      },
+      "pad10": {
+        "translate": [-60, 80],
+        "rotate": 20
+      }
+    }
+  },
   "qwerty": {
     "keymapShowTopRow": false,
     "type": "ansi",
@@ -735,7 +764,7 @@
       "row4": ["ุฤ",  "ไฝ", "ทๆ", "ยณ", "จ๊",  "ค๋", "ี์", "ดศ", "ะฮ", "ู?"],
       "row5": [" "]
   }
-  },  
+  },
   "persian_standard": {
     "keymapShowTopRow": true,
     "type": "ansi",
